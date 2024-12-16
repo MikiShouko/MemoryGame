@@ -1,5 +1,3 @@
-// File: main.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,9 +8,9 @@ import 'memory_game_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure proper binding for async operations
-  await initializeFirebase(); // Initialize Firebase before the app starts
-  runApp(const MemoryGameApp()); // Use MemoryGameApp as the root widget
+  WidgetsFlutterBinding.ensureInitialized(); 
+  await initializeFirebase();
+  runApp(const MemoryGameApp());
 }
 
 class MemoryGameApp extends StatelessWidget {
@@ -113,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       };
 
-      // Save the user data to Firestore
       try {
         final docRef = await FirebaseFirestore.instance.collection('users').add(userData);
         if (mounted) {
