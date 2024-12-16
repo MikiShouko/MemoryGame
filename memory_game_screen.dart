@@ -1,4 +1,3 @@
-// File: memory_game_screen.dart
 import 'package:flutter/material.dart';
 import 'firestore_service.dart';
 
@@ -30,8 +29,6 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> {
         flippedCards = [];
         cards = [];
         stopwatch.start();
-
-        // Initialize quit count
         WidgetsBinding.instance.addPostFrameCallback((_) async {
             final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
             if (args != null) {
@@ -51,12 +48,9 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> {
     @override
     void didChangeDependencies() {
         super.didChangeDependencies();
-        // Retrieve arguments as a map
         final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
         if (args != null) {
-            // Extract specific values
             final String difficulty = args['difficulty'] as String;
-            // Setup the game based on the difficulty
             setupGame(difficulty);
         }
     }
@@ -169,7 +163,6 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> {
                 }
             }).catchError((error) {
                 print('Error updating game data: $error');
-                // Handle error appropriately
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Failed to save game data')),
                 );
@@ -194,7 +187,6 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> {
                             final userId = args['userId'] as String;
 
                             try {
-                                // First fetch current user data
                                 final userData = await _firestoreService.fetchUserData(userId);
                                 final currentQuitCount = userData?['gameData']?['quitCount'] ?? 0;
 
@@ -205,11 +197,10 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> {
                                         'successfulAttempts': successfulAttempts,
                                         'difficulty': args['difficulty'],
                                         'completedAt': DateTime.now().toIso8601String(),
-                                        'quitCount': currentQuitCount  // Preserve current quit count
+                                        'quitCount': currentQuitCount 
                                     }
                                 };
 
-                                // Update with isQuitting set to true
                                 await _firestoreService.updateGameData(
                                     userId,
                                     gameData,
@@ -217,7 +208,6 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> {
                                 );
 
                                 if (mounted) {
-                                    // Add the updated quit count to args
                                     args['quitCount'] = currentQuitCount + 1;
                                     Navigator.of(context).pushReplacementNamed('/intro', arguments: args);
                                 }
