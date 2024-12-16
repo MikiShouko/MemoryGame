@@ -7,7 +7,6 @@ class FirestoreService {
     try {
       final docRef = _firestore.collection('users').doc(userId);
 
-      // First get the current document data
       DocumentSnapshot snapshot = await docRef.get();
       if (!snapshot.exists) {
         throw Exception('User document not found');
@@ -15,23 +14,19 @@ class FirestoreService {
 
       Map<String, dynamic> currentData = snapshot.data() as Map<String, dynamic>;
 
-      // Get the current quit count
       int currentQuitCount = currentData['gameData']?['quitCount'] ?? 0;
 
-      // Prepare the new game data
       Map<String, dynamic> newGameData = {
-        ...currentData['gameData'] ?? {},  // Preserve existing game data
-        ...gameData['gameData'] as Map<String, dynamic>,  // Add new game data
+        ...currentData['gameData'] ?? {},
+        ...gameData['gameData'] as Map<String, dynamic>, 
       };
 
-      // Update quit count only if quitting
       if (isQuitting) {
         newGameData['quitCount'] = currentQuitCount + 1;
       } else {
-        newGameData['quitCount'] = currentQuitCount;  // Preserve current quit count
+        newGameData['quitCount'] = currentQuitCount;
       }
 
-      // Update the document
       await docRef.update({
         'gameData': newGameData,
       });
