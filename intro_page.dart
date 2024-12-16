@@ -1,5 +1,3 @@
-//intro_page.dart
-
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatelessWidget {
@@ -30,7 +28,6 @@ class IntroPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigate back to the LoginPage
             Navigator.pushReplacementNamed(context, '/');
           },
         ),
